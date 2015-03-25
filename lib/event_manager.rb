@@ -2,7 +2,7 @@ require 'csv'
 require 'sunlight/congress'
 require 'erb'
 
-#get an api key @ http://sunlightfoundation.com/api/accounts/register/
+# get an api key @ http://sunlightfoundation.com/api/accounts/register/
 Sunlight::Congress.api_key = ""
 
 
@@ -24,6 +24,16 @@ def save_thank_you_letters(id, form_letter)
   end
 end
 
+def clean_phone_numbers(messy_number)
+  number = messy_number.scan(/\d+/).join
+  if number[0] == '1' && number.length == 11
+    number = number[1..-1]
+  elsif number.length != 10 
+    return 'bad number'
+  end
+  number
+end
+
 puts 'EventManager initialized.'
 
 contents = CSV.open '../event_attendees.csv', headers: true, header_converters: :symbol
@@ -35,9 +45,12 @@ contents.each do |row|
   id = row[0]
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
-  legislators = legislators_by_zipcode(zipcode)
+  phone_number = clean_phone_numbers(row[:homephone])
+  # legislators = legislators_by_zipcode(zipcode)
 
-  form_letter = erb_template.result(binding)
+  # form_letter = erb_template.result(binding)
 
-  save_thank_you_letters(id, form_letter)
+  # save_thank_you_letters(id, form_letter)
+
+  puts phone_number
 end
