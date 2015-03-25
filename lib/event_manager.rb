@@ -3,7 +3,7 @@ require 'sunlight/congress'
 require 'erb'
 
 #get an api key @ http://sunlightfoundation.com/api/accounts/register/
-Sunlight::Congress.api_key = "e179a6973728c4dd3fb1204283aaccb5"
+Sunlight::Congress.api_key = ""
 
 
 def clean_zipcode(zipcode)
